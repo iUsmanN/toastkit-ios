@@ -47,8 +47,8 @@ struct LiquidToastView: View {
 //                        model.expanded.toggle()
 //                    }
 //                } else {
-//                    withAnimation(.spring(duration: 1.5)) {
-//                        dragoffset = .init(width: 0, height: 80)
+//                    withAnimation(.spring) {
+//                        dragoffset = .init(width: 0, height: 0)
 //                        model.expanded.toggle()
 //                    }
 //                }
@@ -58,12 +58,12 @@ struct LiquidToastView: View {
         }
         .onChange(of: model.expanded, {
             if !$1 {
-                withAnimation(.spring) {
+                withAnimation(.smooth) {
                     dragoffset = .init(width: 0, height: LiquidToastView.topMargin)
                 }
             } else {
-                withAnimation(.spring) {
-                    dragoffset = .init(width: 0, height: 80)
+                withAnimation(.smooth) {
+                    dragoffset = .init(width: 0, height: 56.5)
                 }
             }
         })
@@ -74,7 +74,7 @@ struct LiquidToastView: View {
     func liquidEffectView() -> some View {
         Canvas { context, size in
             context.addFilter(.alphaThreshold(min: 0.5, color: .black))
-            context.addFilter(.blur(radius: 17))
+            context.addFilter(.blur(radius: 19.1))
             context.drawLayer { ctx in
                 for index in [1, 2] {
                     if let resolvedView = context.resolveSymbol(id: index) {
@@ -115,14 +115,14 @@ struct LiquidToastView: View {
     func liquidIsland(offset: CGSize = .zero) -> some View {
         Capsule()
             .fill(.red)
-            .frame(width: 124, height: 25)
+            .frame(width: 92, height: 26)
             .padding(.top)
     }
     
     @ViewBuilder
     func liquidToast(offset: CGSize = .zero) -> some View {
         Capsule()
-            .frame(width: 150, height: 25)
+            .frame(width: 130, height: 25)
             .offset(offset)
     }
     
@@ -137,7 +137,7 @@ struct LiquidToastView: View {
             Rectangle()
                 .fill(model.expanded ? .clear : .black)
         }
-        .frame(width: model.expanded ? 250 : minimisedWidth, height: model.expanded ? 50 : 35)
+        .frame(width: model.expanded ? 250 : minimisedWidth, height: model.expanded ? 50 : 30)
         .clipShape(Capsule())
         .shadow(radius: 2)
         .offset(.init(width: offset.width, height: offset.height + 20))

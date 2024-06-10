@@ -40,21 +40,21 @@ struct JellyToastView: View {
         ZStack {
             liquidEffectView()
             topAligned()
-            //                Button(action: {
-            //                    if model.expanded {
-            //                        withAnimation(.spring) {
-            //                            dragoffset = .init(width: 0, height: JellyToastView.topMargin)
-            //                            model.expanded.toggle()
-            //                        }
-            //                    } else {
-            //                        withAnimation(.spring(duration: 0.5)) {
-            //                            dragoffset = .init(width: 0, height: 50)
-            //                            model.expanded.toggle()
-            //                        }
-            //                    }
-            //                }, label: {
-            //                    Text("Button")
-            //                })
+//            Button(action: {
+//                if model.expanded {
+//                    withAnimation {
+//                        dragoffset = .init(width: 0, height: JellyToastView.topMargin)
+//                        model.expanded.toggle()
+//                    }
+//                } else {
+//                    withAnimation(.spring) {
+//                        dragoffset = .init(width: 0, height: 0)
+//                        model.expanded.toggle()
+//                    }
+//                }
+//            }, label: {
+//                Text("Button")
+//            })
         }
         .onChange(of: model.expanded, {
             if !$1 {
@@ -91,7 +91,7 @@ struct JellyToastView: View {
             liquidIsland()
                 .tag(2)
         }
-        .gesture(DragGesture()
+        .gesture(DragGesture() // This is added for testing only.
             .onChanged({ value in
                 dragoffset = value.translation
                 if !model.expanded {
@@ -115,7 +115,7 @@ struct JellyToastView: View {
     func liquidIsland(offset: CGSize = .zero) -> some View {
         Capsule()
             .fill(.red)
-            .frame(width: 70, height: 20)
+            .frame(width: 60, height: 20)
             .padding(.top)
     }
     

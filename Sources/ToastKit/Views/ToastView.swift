@@ -5,6 +5,7 @@
 //  Created by Usman Nazir on 06/06/2024.
 //
 import SwiftUI
+
 struct ToastView: View {
     @ObservedObject var model: ToastModel
     
@@ -31,7 +32,7 @@ struct ToastView: View {
     }
 
     var body: some View {
-        if UIDevice.current.screenType == .none || UIDevice.current.orientation != .portrait {
+        if UIDevice.current.screenType == .none {
             centerAligned()
         } else {
             topAligned()
@@ -50,6 +51,7 @@ struct ToastView: View {
                     .blur(radius: model.expanded ? 0 : 10)
             }
             .opacity(!model.expanded ? 0 : 1)
+            .blur(radius: model.expanded ? 0 : 10)
             .frame(width: model.expanded ? 220 : minimisedWidth, height: model.expanded ? 50 : 35)
             .clipShape(Capsule())
             .shadow(radius: 2)
