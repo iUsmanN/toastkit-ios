@@ -91,11 +91,11 @@ struct JellyToastView: View {
         }
         .onChange(of: model.expanded, {
             if !$1 {
-                withAnimation(.spring) {
+                withAnimation(.bouncy) {
                     dragoffset = .init(width: 0, height: JellyToastView.topMargin)
                 }
             } else {
-                withAnimation(.spring(duration: 0.5)) {
+                withAnimation(.bouncy(duration: 0.75)) {
                     dragoffset = .init(width: 0, height: 50)
                 }
             }
@@ -107,7 +107,7 @@ struct JellyToastView: View {
     func liquidEffectView() -> some View {
         Canvas { context, size in
             context.addFilter(.alphaThreshold(min: 0.5, color: .black))
-            context.addFilter(.blur(radius: 12))
+            context.addFilter(.blur(radius: 14))
             context.drawLayer { ctx in
                 for index in [1, 2] {
                     if let resolvedView = context.resolveSymbol(id: index) {
@@ -148,14 +148,14 @@ struct JellyToastView: View {
     func liquidIsland(offset: CGSize = .zero) -> some View {
         Capsule()
             .fill(.red)
-            .frame(width: 60, height: 20)
+            .frame(width: 65, height: 20)
             .padding(.top)
     }
     
     @ViewBuilder
     func liquidToast(offset: CGSize = .zero) -> some View {
         Capsule()
-            .frame(width: 70, height: 16)
+            .frame(width: 55, height: 16)
             .offset(offset)
     }
     
@@ -166,11 +166,13 @@ struct JellyToastView: View {
                 .fill(.black)
             Text("\(model.message)")
                 .foregroundStyle(.white)
+                .lineLimit(1)
+                .padding(.horizontal, 20)
                 .blur(radius: model.expanded ? 0 : 10)
             Rectangle()
                 .fill(model.expanded ? .clear : .black)
         }
-        .frame(width: model.expanded ? 250 : minimisedWidth, height: model.expanded ? 50 : 33)
+        .frame(width: model.expanded ? CGFloat.minimum((UIScreen.current?.bounds.size.width ?? 0) - 40, model.width) : minimisedWidth, height: model.expanded ? 50 : 33)
         .clipShape(Capsule())
         .shadow(radius: 2)
         .offset(.init(width: offset.width, height: offset.height + 20))

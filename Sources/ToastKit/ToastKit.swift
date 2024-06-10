@@ -31,8 +31,9 @@ public class ToastKit {
     
     /// Configures ToastKit and prepares the views needed to overlay the toasts.
     /// - Parameter type: Type of toast to be presented. Default value is ``ToastType.glass``
-    public static func configure(type: ToastType = .glass) {
+    public static func configure(type: ToastType = .glass, width: CGFloat = 250.0) {
         guard let window = ToastKit.window else { return }
+        shared.model.width = width
         if type == .liquid && UIDevice.current.screenType == .dynamicIsland {
             shared.prepareLiquidToast(window: window)
         } else if type == .drop && UIDevice.current.screenType != .none {
@@ -46,28 +47,29 @@ public class ToastKit {
         }
     }
     
-    public func disable() {
+    public static func disable() {
         ToastKit.window?.isHidden = true
         ToastKit.window = nil
-        jellyHostingController = nil
-        liquidHostingController = nil
-        blurHostingController = nil
-        standardHostingController = nil
+        shared.jellyHostingController = nil
+        shared.liquidHostingController = nil
+        shared.blurHostingController = nil
+        shared.standardHostingController = nil
     }
     
-    @MainActor
     /// Presents a toast overlay in the configured style.
     /// - Parameters:
     ///   - message: A text stting that should be presented.
     ///   - color: Background tint of the toast. This is only applicable when presenting Glass or Solid toasts.
     public static func present(message: String, color: Color = .blue) {
-        guard !shared.model.expanded else { return }
-        shared.model.message = message
-        shared.model.color = color
-        withAnimation(.spring) {
-            shared.model.expanded = true
+        Task { @MainActor in
+            guard !shared.model.expanded else { return }
+            shared.model.message = message
+            shared.model.color = color
+            withAnimation(.spring) {
+                shared.model.expanded = true
+            }
+            shared.dismissToast()
         }
-        shared.dismissToast()
     }
     
     @MainActor

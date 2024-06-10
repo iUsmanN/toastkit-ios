@@ -46,13 +46,15 @@ struct BlurToastView: View {
                     .fill(model.expanded ? model.color.opacity(0.25) : .black)
                 Text("\(model.message)")
                     .foregroundStyle(.primary)
+                    .lineLimit(1)
+                    .padding(.horizontal, 20)
                     .opacity(model.expanded ? 1 : 0)
                     .blur(radius: model.expanded ? 0 : 10)
             }
             .background(.thinMaterial)
             .opacity(!model.expanded ? 0 : 1)
             .blur(radius: model.expanded ? 0 : 10)
-            .frame(width: model.expanded ? 220 : minimisedWidth, height: model.expanded ? 50 : 35)
+            .frame(width: model.expanded ? CGFloat.minimum((UIScreen.current?.bounds.size.width ?? 0) - 40, model.width) : minimisedWidth, height: model.expanded ? 50 : 35)
             .clipShape(Capsule())
             .shadow(radius: 2)
             .overlay(content: {

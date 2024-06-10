@@ -13,27 +13,23 @@ struct ExampleView: View {
             presentToast()
         }, label: {
             Text("Present Toast")
-        })
+        }).tint(.red)
         Button(action: {
             presentToast2()
         }, label: {
             Text("Present Another Toast")
-        })
+        }).tint(.green)
         .onAppear {
-            ToastKit.configure(type: .glass)
+            ToastKit.configure(type: .solid)
         }
     }
     
     func presentToast() {
-        Task {
-            await ToastKit.present(message: "Some cool message", color: Color.red)
-        }
+        ToastKit.present(message: "Some cool message", color: Color.red)
     }
     
     func presentToast2() {
-        Task {
-            await ToastKit.present(message: "Another cool message", color: Color.green)
-        }
+        ToastKit.present(message: "Some cool message", color: Color.green)
     }
 }
 
