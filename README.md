@@ -24,8 +24,9 @@ There are 4 types of Toasts that can be presented: `Liquid`, `Drop`, `Glass` and
 -------
 ### Example SwiftUI Code:
 
-```
+```swift
 import SwiftUI
+import ToastKit
 
 struct ExampleView: View {
     var body: some View {
@@ -35,14 +36,13 @@ struct ExampleView: View {
             Text("Present Toast")
         })
         .onAppear {
-            ToastKit.shared.configure(type: .drop)
+            ToastKit.configure(type: .glass) // Step 1
         }
     }
     
     func presentToast() {
         Task {
-            await ToastKit.shared.presentToast(message: "Some cool message",
-                                               color: Color.yellow)
+            await ToastKit.present(message: "Some cool message", color: Color.yellow) // Step 2
         }
     }
 }
