@@ -15,7 +15,7 @@ struct ExampleView: View {
             Text("Present Toast")
         })
         .onAppear {
-            ToastKit.shared.configure(type: .liquid)
+            ToastKit.shared.configure(type: .drop)
         }
     }
     

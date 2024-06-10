@@ -10,7 +10,40 @@ import SwiftUI
 struct JellyToastView: View {
     @ObservedObject var model: ToastModel
     
-    private static let topMargin = 8.5
+    private static var topMargin: CGFloat {
+        switch UIDevice.current.screenType {
+        case .dynamicIsland:
+            return 8.5
+        case .notch:
+            return -23.5
+        case .none:
+            return 0
+        }
+    }
+    
+    private static var liquidIslandTopMargin: CGFloat {
+        switch UIDevice.current.screenType {
+        case .dynamicIsland:
+            return 30
+        case .notch:
+            return 17
+        case .none:
+            return 0
+        }
+    }
+    
+    private static var liquidToastTopMargin: CGFloat {
+        switch UIDevice.current.screenType {
+        case .dynamicIsland:
+            return 5
+        case .notch:
+            return -15
+        case .none:
+            return 0
+        }
+    }
+    
+    
     @State var dragoffset: CGSize = .init(width: 0, height: topMargin)//.zero
     
     var topPadding: CGFloat {
@@ -78,7 +111,7 @@ struct JellyToastView: View {
             context.drawLayer { ctx in
                 for index in [1, 2] {
                     if let resolvedView = context.resolveSymbol(id: index) {
-                        ctx.draw(resolvedView, at: .init(x: size.width/2, y: 30))
+                        ctx.draw(resolvedView, at: .init(x: size.width/2, y: JellyToastView.liquidIslandTopMargin))
                     } else {
                         print("Failed to resolve symbol \(index)")
                     }
@@ -146,7 +179,7 @@ struct JellyToastView: View {
                 .stroke(model.expanded ? Color.primary.opacity(0.5) : .black)
                 .offset(.init(width: offset.width, height: offset.height + 20))
         })
-        .padding(.top, model.expanded ? 5 : -topPadding)
+        .padding(.top, model.expanded ? JellyToastView.liquidToastTopMargin : -topPadding)
     }
     
     @ViewBuilder

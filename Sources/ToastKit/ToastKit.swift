@@ -33,18 +33,15 @@ public class ToastKit {
         guard let window = ToastKit.window else { return }
         if type == .liquid && UIDevice.current.screenType == .dynamicIsland {
             prepareLiquidToast(window: window)
-        } else if type == .drop && UIDevice.current.screenType == .dynamicIsland {
+        } else if type == .drop && UIDevice.current.screenType != .none {
             prepareJellyToast(window: window)
         } else {
-            if type == .glass {
-                prepareBlurToast(window: window)
-            } else {
+            if type == .solid {
                 prepareSolidToast(window: window)
+            } else {
+                prepareBlurToast(window: window)
             }
         }
-//        refreshOrientationView()
-//        print(window.isHidden)
-//        print(model.toastType)
     }
     
     public func disable() {
