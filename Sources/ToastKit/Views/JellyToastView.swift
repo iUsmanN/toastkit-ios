@@ -10,7 +10,40 @@ import SwiftUI
 struct JellyToastView: View {
     @ObservedObject var model: ToastModel
     
-    private static let topMargin = 8.5
+    private static var topMargin: CGFloat {
+        switch UIDevice.current.screenType {
+        case .dynamicIsland:
+            return 8.5
+        case .notch:
+            return -23.5
+        case .none:
+            return 0
+        }
+    }
+    
+    private static var liquidIslandTopMargin: CGFloat {
+        switch UIDevice.current.screenType {
+        case .dynamicIsland:
+            return 30
+        case .notch:
+            return 17
+        case .none:
+            return 0
+        }
+    }
+    
+    private static var liquidToastTopMargin: CGFloat {
+        switch UIDevice.current.screenType {
+        case .dynamicIsland:
+            return 5
+        case .notch:
+            return -15
+        case .none:
+            return 0
+        }
+    }
+    
+    
     @State var dragoffset: CGSize = .init(width: 0, height: topMargin)//.zero
     
     var topPadding: CGFloat {
@@ -40,21 +73,21 @@ struct JellyToastView: View {
         ZStack {
             liquidEffectView()
             topAligned()
-            //                Button(action: {
-            //                    if model.expanded {
-            //                        withAnimation(.spring) {
-            //                            dragoffset = .init(width: 0, height: JellyToastView.topMargin)
-            //                            model.expanded.toggle()
-            //                        }
-            //                    } else {
-            //                        withAnimation(.spring(duration: 0.5)) {
-            //                            dragoffset = .init(width: 0, height: 50)
-            //                            model.expanded.toggle()
-            //                        }
-            //                    }
-            //                }, label: {
-            //                    Text("Button")
-            //                })
+//            Button(action: {
+//                if model.expanded {
+//                    withAnimation {
+//                        dragoffset = .init(width: 0, height: JellyToastView.topMargin)
+//                        model.expanded.toggle()
+//                    }
+//                } else {
+//                    withAnimation(.spring) {
+//                        dragoffset = .init(width: 0, height: 0)
+//                        model.expanded.toggle()
+//                    }
+//                }
+//            }, label: {
+//                Text("Button")
+//            })
         }
         .onChange(of: model.expanded, {
             if !$1 {
@@ -78,7 +111,7 @@ struct JellyToastView: View {
             context.drawLayer { ctx in
                 for index in [1, 2] {
                     if let resolvedView = context.resolveSymbol(id: index) {
-                        ctx.draw(resolvedView, at: .init(x: size.width/2, y: 30))
+                        ctx.draw(resolvedView, at: .init(x: size.width/2, y: JellyToastView.liquidIslandTopMargin))
                     } else {
                         print("Failed to resolve symbol \(index)")
                     }
@@ -91,7 +124,7 @@ struct JellyToastView: View {
             liquidIsland()
                 .tag(2)
         }
-        .gesture(DragGesture()
+        .gesture(DragGesture() // This is added for testing only.
             .onChanged({ value in
                 dragoffset = value.translation
                 if !model.expanded {
@@ -115,7 +148,7 @@ struct JellyToastView: View {
     func liquidIsland(offset: CGSize = .zero) -> some View {
         Capsule()
             .fill(.red)
-            .frame(width: 70, height: 20)
+            .frame(width: 60, height: 20)
             .padding(.top)
     }
     
@@ -146,7 +179,7 @@ struct JellyToastView: View {
                 .stroke(model.expanded ? Color.primary.opacity(0.5) : .black)
                 .offset(.init(width: offset.width, height: offset.height + 20))
         })
-        .padding(.top, model.expanded ? 5 : -topPadding)
+        .padding(.top, model.expanded ? JellyToastView.liquidToastTopMargin : -topPadding)
     }
     
     @ViewBuilder

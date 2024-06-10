@@ -26,21 +26,20 @@ public class ToastKit {
     private var model = ToastModel()
     
     private init() {
-        NotificationCenter.default.addObserver(self, selector: #selector(deviceOrientationDidChange), name: UIDevice.orientationDidChangeNotification, object: nil)
-        deviceOrientationDidChange()
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshOrientationView), name: UIDevice.orientationDidChangeNotification, object: nil)
     }
     
     public func configure(type: ToastType = .liquid) {
         guard let window = ToastKit.window else { return }
         if type == .liquid && UIDevice.current.screenType == .dynamicIsland {
             prepareLiquidToast(window: window)
-        } else if type == .drop && UIDevice.current.screenType == .dynamicIsland {
+        } else if type == .drop && UIDevice.current.screenType != .none {
             prepareJellyToast(window: window)
         } else {
-            if type == .glass {
-                prepareBlurToast(window: window)
-            } else {
+            if type == .solid {
                 prepareSolidToast(window: window)
+            } else {
+                prepareBlurToast(window: window)
             }
         }
     }
@@ -98,6 +97,7 @@ extension ToastKit {
         hostingController.view.backgroundColor = .clear
         self.liquidHostingController = hostingController
         window.rootViewController = hostingController
+        model.toastType = .liquid
     }
     
     private func prepareJellyToast(window: UIWindow) {
@@ -106,6 +106,7 @@ extension ToastKit {
         hostingController.view.backgroundColor = .clear
         self.jellyHostingController = hostingController
         window.rootViewController = hostingController
+        model.toastType = .drop
     }
     
     private func prepareBlurToast(window: UIWindow) {
@@ -114,6 +115,7 @@ extension ToastKit {
         hostingController.view.backgroundColor = .clear
         self.blurHostingController = hostingController
         window.rootViewController = hostingController
+        model.toastType = .glass
     }
     
     private func prepareSolidToast(window: UIWindow) {
@@ -122,16 +124,17 @@ extension ToastKit {
         hostingController.view.backgroundColor = .clear
         self.standardHostingController = hostingController
         window.rootViewController = hostingController
+        model.toastType = .solid
     }
 }
 
 extension ToastKit {
-    @objc private func deviceOrientationDidChange() {
+    @objc private func refreshOrientationView() {
         let currentOrientation = UIDevice.current.orientation
-        if (blurHostingController != nil) || (standardHostingController != nil) {
-            ToastKit.window?.isHidden = false
-        } else {
+        if model.toastType == .drop || model.toastType == .liquid {
             ToastKit.window?.isHidden = !currentOrientation.isPortrait
+        } else if model.toastType == .glass || model.toastType == .solid {
+            ToastKit.window?.isHidden = false
         }
         Task { dismissToast }
     }

@@ -31,7 +31,7 @@ struct BlurToastView: View {
     }
 
     var body: some View {
-        if UIDevice.current.screenType == .none || UIDevice.current.orientation != .portrait {
+        if UIDevice.current.screenType == .none {
             centerAligned()
         } else {
             topAligned()
@@ -51,6 +51,7 @@ struct BlurToastView: View {
             }
             .background(.thinMaterial)
             .opacity(!model.expanded ? 0 : 1)
+            .blur(radius: model.expanded ? 0 : 10)
             .frame(width: model.expanded ? 220 : minimisedWidth, height: model.expanded ? 50 : 35)
             .clipShape(Capsule())
             .shadow(radius: 2)
