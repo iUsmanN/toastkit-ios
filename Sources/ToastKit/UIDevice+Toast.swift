@@ -16,6 +16,7 @@ enum ScreenType: String {
 
 extension UIDevice {
     
+    // Might be changed later
     var screenType: ScreenType {
         let scenes = UIApplication.shared.connectedScenes
         let windowScene = scenes.first as? UIWindowScene

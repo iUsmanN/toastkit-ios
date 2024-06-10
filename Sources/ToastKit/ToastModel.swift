@@ -11,6 +11,6 @@ import SwiftUI
 public class ToastModel: ObservableObject {
     var toastType: ToastType = .liquid
     @Published var expanded: Bool = false
-    @Published var message: String = ""
-    @Published var color: Color = .blue
+    var message: String = ""
+    var color: Color = .blue
 }
