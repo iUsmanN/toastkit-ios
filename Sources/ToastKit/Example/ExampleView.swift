@@ -15,14 +15,13 @@ struct ExampleView: View {
             Text("Present Toast")
         })
         .onAppear {
-            ToastKit.shared.configure(type: .drop)
+            ToastKit.configure(type: .drop)
         }
     }
     
     func presentToast() {
         Task {
-            await ToastKit.shared.presentToast(message: "Some cool message",
-                                               color: Color.blue)
+            await ToastKit.present(message: "Some cool message", color: Color.red)
         }
     }
 }
