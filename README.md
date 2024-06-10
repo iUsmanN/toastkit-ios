@@ -1,30 +1,32 @@
 # ToastKit
-A simple lightweight framework to present toasts.
+
+A simple lightweight framework to present toasts in SwiftUI and UIKit.
+
+- Toasts are overlayed on top of the existing view - they are not user interactable.
+- Each toast automatically dismisses after 2 seconds.
+- A new toast is not presented while the previous one is visible.
 
 -------
+As per the latest update,
 
-`Liquid` and `Drop` toasts are only supported with Dynamic Island devices on Portrait orientation.
+- `Liquid` toasts are only supported with Dynamic Island devices on Portrait orientation.
+- `Drop` toasts are supported with both Notch and Dynamic Island devices.
+- Only `Glass` and `Solid` toasts are supported with landscape orientation.
 
 -------
 ### Toast Types
 
+There are 4 types of Toasts that can be presented: `Liquid`, `Drop`, `Glass` and `Solid`
 
-
-https://github.com/iUsmanN/toastkit-ios/assets/107039878/9a4ba5e7-31d1-4684-93da-e46b543c99f7
-
-
-
-https://github.com/iUsmanN/toastkit-ios/assets/107039878/622bff27-a8e2-4295-abdd-72817d650fa5
-
-
-
-https://github.com/iUsmanN/toastkit-ios/assets/107039878/2a6f73d8-1ec9-4238-bb0f-650af7745d02
-
+<img src="https://github.com/iUsmanN/toastkit-ios/assets/107039878/898e5f07-267e-4e4e-9958-01e317928663" width=1000>
+<img src="https://github.com/iUsmanN/toastkit-ios/assets/107039878/e0ad7204-571a-42af-8729-2953021d688e" width=1000>
 
 -------
-### Example Usage:
+### Example SwiftUI Code:
 
 ```
+import SwiftUI
+
 struct ExampleView: View {
     var body: some View {
         Button(action: {
@@ -32,21 +34,24 @@ struct ExampleView: View {
         }, label: {
             Text("Present Toast")
         })
-            .onAppear {
-                ToastKit.shared.configure(type: .glass)
-                print("Configured")
-            }
+        .onAppear {
+            ToastKit.shared.configure(type: .drop)
+        }
     }
     
     func presentToast() {
         Task {
-            await ToastKit.shared.presentToast(message: "Some cool message", color: Color.green)
-            print("Presented")
+            await ToastKit.shared.presentToast(message: "Some cool message",
+                                               color: Color.yellow)
         }
     }
 }
-```
 
+#Preview {
+    ExampleView()
+}
+```
+<!---
 -------
 ### Behind the scenes:
 
@@ -65,7 +70,7 @@ https://github.com/iUsmanN/toastkit-ios/assets/107039878/c8b8deb4-8655-4f10-b5a7
 
 
 https://github.com/iUsmanN/toastkit-ios/assets/107039878/e4d21dc2-5ade-4679-852b-dc8021aaad5e
-
+--->
 
 -------
 Usman Nazir
