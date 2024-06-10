@@ -17,7 +17,7 @@ public enum ToastType {
 }
 
 public class ToastKit {
-    public static let shared = ToastKit()
+    private static let shared = ToastKit()
     private static var window: UIWindow? = getWindow()
     private var liquidHostingController: UIHostingController<LiquidToastView>?
     private var standardHostingController: UIHostingController<ToastView>?
@@ -29,17 +29,19 @@ public class ToastKit {
         NotificationCenter.default.addObserver(self, selector: #selector(refreshOrientationView), name: UIDevice.orientationDidChangeNotification, object: nil)
     }
     
-    public func configure(type: ToastType = .liquid) {
+    /// Configures ToastKit and prepares the views needed to overlay the toasts.
+    /// - Parameter type: Type of toast to be presented. Default value is ``ToastType.glass``
+    public static func configure(type: ToastType = .glass) {
         guard let window = ToastKit.window else { return }
         if type == .liquid && UIDevice.current.screenType == .dynamicIsland {
-            prepareLiquidToast(window: window)
+            shared.prepareLiquidToast(window: window)
         } else if type == .drop && UIDevice.current.screenType != .none {
-            prepareJellyToast(window: window)
+            shared.prepareJellyToast(window: window)
         } else {
             if type == .solid {
-                prepareSolidToast(window: window)
+                shared.prepareSolidToast(window: window)
             } else {
-                prepareBlurToast(window: window)
+                shared.prepareBlurToast(window: window)
             }
         }
     }
@@ -54,14 +56,18 @@ public class ToastKit {
     }
     
     @MainActor
-    public func presentToast(message: String, color: Color = .blue) {
-        guard !model.expanded else { return }
-        model.message = message
-        model.color = color
+    /// Presents a toast overlay in the configured style.
+    /// - Parameters:
+    ///   - message: A text stting that should be presented.
+    ///   - color: Background tint of the toast. This is only applicable when presenting Glass or Solid toasts.
+    public static func present(message: String, color: Color = .blue) {
+        guard !shared.model.expanded else { return }
+        shared.model.message = message
+        shared.model.color = color
         withAnimation(.spring) {
-            model.expanded = true
+            shared.model.expanded = true
         }
-        dismissToast()
+        shared.dismissToast()
     }
     
     @MainActor

@@ -14,15 +14,25 @@ struct ExampleView: View {
         }, label: {
             Text("Present Toast")
         })
+        Button(action: {
+            presentToast2()
+        }, label: {
+            Text("Present Another Toast")
+        })
         .onAppear {
-            ToastKit.shared.configure(type: .drop)
+            ToastKit.configure(type: .glass)
         }
     }
     
     func presentToast() {
         Task {
-            await ToastKit.shared.presentToast(message: "Some cool message",
-                                               color: Color.blue)
+            await ToastKit.present(message: "Some cool message", color: Color.red)
+        }
+    }
+    
+    func presentToast2() {
+        Task {
+            await ToastKit.present(message: "Another cool message", color: Color.green)
         }
     }
 }
