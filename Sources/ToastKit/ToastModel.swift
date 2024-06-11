@@ -13,4 +13,5 @@ public class ToastModel: ObservableObject {
     @Published var expanded: Bool = false
     var message: String = ""
     var color: Color = .blue
+    var width: CGFloat = 250.0
 }
