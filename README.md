@@ -31,18 +31,12 @@ import ToastKit
 struct ExampleView: View {
     var body: some View {
         Button(action: {
-            presentToast()
+            ToastKit.present(message: "Some cool message", color: Color.yellow) // Step 2
         }, label: {
             Text("Present Toast")
         })
         .onAppear {
             ToastKit.configure(type: .glass) // Step 1
-        }
-    }
-    
-    func presentToast() {
-        Task {
-            await ToastKit.present(message: "Some cool message", color: Color.yellow) // Step 2
         }
     }
 }
