@@ -37,37 +37,41 @@ struct LiquidToastView: View {
     
     var body: some View {
         
-        ZStack {
-            liquidEffectView()
-            topAligned()
-//            Button(action: {
-//                if model.expanded {
-//                    withAnimation {
-//                        dragoffset = .init(width: 0, height: LiquidToastView.topMargin)
-//                        model.expanded.toggle()
-//                    }
-//                } else {
-//                    withAnimation(.spring) {
-//                        dragoffset = .init(width: 0, height: 0)
-//                        model.expanded.toggle()
-//                    }
-//                }
-//            }, label: {
-//                Text("Button")
-//            })
-        }
-        .onChange(of: model.expanded, {
-            if !$1 {
-                withAnimation(.smooth) {
-                    dragoffset = .init(width: 0, height: LiquidToastView.topMargin)
-                }
-            } else {
-                withAnimation(.smooth) {
-                    dragoffset = .init(width: 0, height: 56.5)
-                }
+        if #available(iOS 17.0, *) {
+            ZStack {
+                liquidEffectView()
+                topAligned()
             }
-        })
-        .ignoresSafeArea()
+            .onChange(of: model.expanded, {
+                if !$1 {
+                    withAnimation(.smooth) {
+                        dragoffset = .init(width: 0, height: LiquidToastView.topMargin)
+                    }
+                } else {
+                    withAnimation(.smooth) {
+                        dragoffset = .init(width: 0, height: 56.5)
+                    }
+                }
+            })
+            .ignoresSafeArea()
+        } else {
+            ZStack {
+                liquidEffectView()
+                topAligned()
+            }
+            .onChange(of: model.expanded, perform: { value in
+                if value {
+                    withAnimation(.smooth) {
+                        dragoffset = .init(width: 0, height: LiquidToastView.topMargin)
+                    }
+                } else {
+                    withAnimation(.smooth) {
+                        dragoffset = .init(width: 0, height: 56.5)
+                    }
+                }
+            })
+            .ignoresSafeArea()
+        }
     }
     
     @ViewBuilder

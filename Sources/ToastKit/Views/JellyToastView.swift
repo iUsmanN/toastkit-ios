@@ -70,37 +70,42 @@ struct JellyToastView: View {
     
     var body: some View {
         
-        ZStack {
-            liquidEffectView()
-            topAligned()
-//            Button(action: {
-//                if model.expanded {
-//                    withAnimation {
-//                        dragoffset = .init(width: 0, height: JellyToastView.topMargin)
-//                        model.expanded.toggle()
-//                    }
-//                } else {
-//                    withAnimation(.spring) {
-//                        dragoffset = .init(width: 0, height: 0)
-//                        model.expanded.toggle()
-//                    }
-//                }
-//            }, label: {
-//                Text("Button")
-//            })
-        }
-        .onChange(of: model.expanded, {
-            if !$1 {
-                withAnimation(.bouncy) {
-                    dragoffset = .init(width: 0, height: JellyToastView.topMargin)
-                }
-            } else {
-                withAnimation(.bouncy(duration: 0.75)) {
-                    dragoffset = .init(width: 0, height: 50)
-                }
+        if #available(iOS 17.0, *) {
+            ZStack {
+                liquidEffectView()
+                topAligned()
             }
-        })
-        .ignoresSafeArea()
+            .onChange(of: model.expanded, {
+                if !$1 {
+                    withAnimation(.bouncy) {
+                        dragoffset = .init(width: 0, height: JellyToastView.topMargin)
+                    }
+                } else {
+                    withAnimation(.bouncy(duration: 0.75)) {
+                        dragoffset = .init(width: 0, height: 50)
+                    }
+                }
+            })
+            .ignoresSafeArea()
+        } else {
+            // Fallback on earlier versions
+            ZStack {
+                liquidEffectView()
+                topAligned()
+            }
+            .onChange(of: model.expanded, perform: { value in
+                if value {
+                    withAnimation(.bouncy) {
+                        dragoffset = .init(width: 0, height: JellyToastView.topMargin)
+                    }
+                } else {
+                    withAnimation(.bouncy(duration: 0.75)) {
+                        dragoffset = .init(width: 0, height: 50)
+                    }
+                }
+            })
+            .ignoresSafeArea()
+        }
     }
     
     @ViewBuilder
