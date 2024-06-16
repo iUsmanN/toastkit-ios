@@ -47,11 +47,11 @@ struct ToastView: View {
                     .fill(model.expanded ? model.color : .black)
                 HStack {
                     model.symbol
-                        .foregroundStyle(model.color == .black ? .white : .primary)
+                        .foregroundStyle(model.color == .black ? .white : model.tint)
                     Text("\(model.message)")
-                        .foregroundStyle(model.color == .black ? .white : .primary)
+                        .foregroundStyle(model.color == .black ? .white : model.tint)
                         .lineLimit(1)
-                        .opacity(model.expanded ? 1 : 0)
+//                        .opacity(model.expanded ? 1 : 0)
                 }
                 .blur(radius: model.expanded ? 0 : 10)
                 .padding(.horizontal, 20)
@@ -79,9 +79,9 @@ struct ToastView: View {
                     .fill(model.color)
                 HStack {
                     model.symbol
-                        .foregroundStyle(model.color == .black ? .white : .primary)
+                        .foregroundStyle(model.color == .black ? .white : model.tint)
                     Text("\(model.message)")
-                        .foregroundStyle(model.color == .black ? .white : .primary)
+                        .foregroundStyle(model.color == .black ? .white : model.tint)
                         .lineLimit(1)
                         .opacity(model.expanded ? 1 : 0)
                 }
@@ -90,7 +90,7 @@ struct ToastView: View {
                     .colorInvert()
             }
             .opacity(!model.expanded ? 0 : 1)
-            .frame(width: model.expanded ? CGFloat.minimum((UIScreen.current?.bounds.size.width ?? 0) - 40, model.width) : minimisedWidth, height: model.expanded ? 50 : 25)
+            .frame(width: CGFloat.minimum((UIScreen.current?.bounds.size.width ?? 0) - 40, model.width) - (model.expanded ? 0 : 20), height: model.expanded ? 50 : 40)
             .clipShape(RoundedRectangle(cornerRadius: 12))
             .overlay(content: {
                 RoundedRectangle(cornerRadius: 12)

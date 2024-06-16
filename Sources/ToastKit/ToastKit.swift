@@ -63,12 +63,14 @@ public class ToastKit {
     /// - Parameters:
     ///   - message: A text stting that should be presented.
     ///   - color: Background tint of the toast. This is only applicable when presenting Glass or Solid toasts.
-    public static func present(message: String, symbol: Image? = nil, color: Color = .blue) {
+    public static func present(message: String, symbol: Image? = nil, color: Color = .blue, tint: Color = .primary, width: CGFloat = 250.0) {
         Task { @MainActor in
             guard !shared.model.expanded else { return }
             shared.model.message = message
             shared.model.symbol = symbol
             shared.model.color = color
+            shared.model.width = width
+            shared.model.tint = tint
             withAnimation(.spring) {
                 shared.model.expanded = true
             }
@@ -83,6 +85,7 @@ public class ToastKit {
             await MainActor.run {
                 withAnimation {
                     self?.model.expanded = false
+                    self?.model.color = .clear
                 }
             }
         }
