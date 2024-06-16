@@ -53,7 +53,7 @@ struct ToastView: View {
                         .lineLimit(1)
 //                        .opacity(model.expanded ? 1 : 0)
                 }
-                .blur(radius: model.expanded ? 0 : 10)
+                .dynamicTypeSize(.large)
                 .padding(.horizontal, 20)
             }
             .opacity(!model.expanded ? 0 : 1)
@@ -85,6 +85,7 @@ struct ToastView: View {
                         .lineLimit(1)
                         .opacity(model.expanded ? 1 : 0)
                 }
+                .dynamicTypeSize(.large)
             }
             .blur(radius: model.expanded ? 0 : 8)
             .opacity(!model.expanded ? 0 : 1)
