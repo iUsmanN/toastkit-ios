@@ -43,12 +43,12 @@ struct BlurToastView: View {
         VStack {
             ZStack(alignment: .center) {
                 Rectangle()
-                    .fill(model.expanded ? model.color.opacity(0.25) : .black)
+                    .fill(model.expanded ? model.color.opacity(0.35) : .black)
                 HStack {
                     model.symbol
-                        .foregroundStyle(.primary)
+                        .foregroundStyle(model.tint)
                     Text("\(model.message)")
-                        .foregroundStyle(.primary)
+                        .foregroundStyle(model.tint)
                         .lineLimit(1)
                         .opacity(model.expanded ? 1 : 0)
                 }
@@ -76,12 +76,12 @@ struct BlurToastView: View {
         VStack {
             ZStack(alignment: .center) {
                 Rectangle()
-                    .fill(model.color.opacity(0.25))
+                    .fill(model.color.opacity(0.35))
                 HStack {
                     model.symbol
-                        .foregroundStyle(.primary)
+                        .foregroundStyle(model.tint)
                     Text("\(model.message)")
-                        .foregroundStyle(.primary)
+                        .foregroundStyle(model.tint)
                         .lineLimit(1)
                         .opacity(model.expanded ? 1 : 0)
                 }
@@ -91,11 +91,11 @@ struct BlurToastView: View {
             }
             .background(.ultraThinMaterial)
             .opacity(!model.expanded ? 0 : 1)
-            .frame(width: model.expanded ? CGFloat.minimum((UIScreen.current?.bounds.size.width ?? 0) - 40, model.width) : minimisedWidth, height: model.expanded ? 50 : 25)
+            .frame(width: CGFloat.minimum((UIScreen.current?.bounds.size.width ?? 0) - 40, model.width) - (model.expanded ? 0 : 20), height: model.expanded ? 50 : 40)
             .clipShape(RoundedRectangle(cornerRadius: 12))
             .overlay(content: {
                 RoundedRectangle(cornerRadius: 12)
-                    .stroke(.primary.opacity(0.5))
+                    .stroke(model.tint.opacity(0.5))
                     .opacity(!model.expanded ? 0 : 1)
             })
         }

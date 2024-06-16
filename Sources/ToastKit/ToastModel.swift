@@ -12,7 +12,8 @@ public class ToastModel: ObservableObject {
     var toastType: ToastType = .liquid
     @Published var expanded: Bool = false
     var message: String = ""
-    var color: Color = .blue
+    var color: Color = .black
+    var tint: Color = .white
     var width: CGFloat = 250.0
     var symbol: Image? = nil
     

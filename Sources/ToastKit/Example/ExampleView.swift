@@ -17,26 +17,28 @@ struct ExampleView: View {
                         presentToast()
                     }, label: {
                         Text("Present Toast")
-                    }).tint(.black)
+                    }).tint(.blue)
                     Button(action: {
                         presentToast2()
                     }, label: {
                         Text("Present Another Toast")
-                    }).tint(.black)
+                    }).tint(.red)
                 }
                 .padding(.top, 300)
             }
         }
         .ignoresSafeArea()
         .onAppear {
-            ToastKit.configure(type: .solid(centred: true))
+            ToastKit.configure(type: .glass(centred: true))
         }
     }
     
     func presentToast() {
         ToastKit.present(message: "Some cool message",
                          symbol: Image(systemName: "square.and.arrow.up.fill"),
-                         color: Color.black)
+                         color: Color.yellow,
+                         tint: .black,
+                         width: 220)
     }
     
     func presentToast2() {
