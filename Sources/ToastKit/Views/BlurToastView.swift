@@ -31,7 +31,7 @@ struct BlurToastView: View {
     }
 
     var body: some View {
-        if UIDevice.current.screenType == .none {
+        if UIDevice.current.screenType == .none || model.isCentered {
             centerAligned()
         } else {
             topAligned()
@@ -75,6 +75,7 @@ struct BlurToastView: View {
                     .fill(model.color.opacity(0.25))
                 Text("\(model.message)")
                     .foregroundStyle(.primary)
+                    .lineLimit(1)
                     .opacity(model.expanded ? 1 : 0)
                 Rectangle()
                     .fill(model.expanded ? .clear : .primary)

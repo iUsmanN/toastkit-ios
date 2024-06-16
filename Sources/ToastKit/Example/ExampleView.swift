@@ -9,23 +9,32 @@ import SwiftUI
 
 struct ExampleView: View {
     var body: some View {
-        Button(action: {
-            presentToast()
-        }, label: {
-            Text("Present Toast")
-        }).tint(.red)
-        Button(action: {
-            presentToast2()
-        }, label: {
-            Text("Present Another Toast")
-        }).tint(.green)
+        ZStack {
+//            LinearGradient(colors: [.red, .blue, .green, .yellow, .red], startPoint: .leading, endPoint: .trailing)
+            ScrollView {
+                VStack {
+                    Button(action: {
+                        presentToast()
+                    }, label: {
+                        Text("Present Toast")
+                    }).tint(.black)
+                    Button(action: {
+                        presentToast2()
+                    }, label: {
+                        Text("Present Another Toast")
+                    }).tint(.black)
+                }
+                .padding(.top, 300)
+            }
+        }
+        .ignoresSafeArea()
         .onAppear {
-            ToastKit.configure(type: .solid)
+            ToastKit.configure(type: .glass(centred: true))
         }
     }
     
     func presentToast() {
-        ToastKit.present(message: "Some cool message", color: Color.red)
+        ToastKit.present(message: "Some cool message", color: Color.black)
     }
     
     func presentToast2() {

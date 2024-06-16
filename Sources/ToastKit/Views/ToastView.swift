@@ -32,7 +32,7 @@ struct ToastView: View {
     }
 
     var body: some View {
-        if UIDevice.current.screenType == .none {
+        if UIDevice.current.screenType == .none || model.isCentered {
             centerAligned()
         } else {
             topAligned()
@@ -46,7 +46,7 @@ struct ToastView: View {
                 Rectangle()
                     .fill(model.expanded ? model.color : .black)
                 Text("\(model.message)")
-                    .foregroundStyle(.primary)
+                    .foregroundStyle(model.color == .black ? .white : .primary)
                     .lineLimit(1)
                     .padding(.horizontal, 20)
                     .opacity(model.expanded ? 1 : 0)
@@ -74,7 +74,8 @@ struct ToastView: View {
                 Rectangle()
                     .fill(model.color)
                 Text("\(model.message)")
-                    .foregroundStyle(.primary)
+                    .foregroundStyle(model.color == .black ? .white : .primary)
+                    .lineLimit(1)
                     .opacity(model.expanded ? 1 : 0)
                 Rectangle()
                     .fill(model.expanded ? .clear : .primary)
@@ -89,6 +90,7 @@ struct ToastView: View {
                     .opacity(!model.expanded ? 0 : 1)
             })
         }
+        .blur(radius: model.expanded ? 0 : 5)
         .ignoresSafeArea()
     }
 }
