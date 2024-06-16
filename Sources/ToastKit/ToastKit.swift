@@ -93,7 +93,7 @@ extension ToastKit {
     
     private static func getWindow() -> UIWindow? {
         let windowScene = UIApplication.shared.connectedScenes
-            .first as? UIWindowScene
+            .first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene
         guard let windowScene = windowScene else { return nil }
         let window = UIWindow(windowScene: windowScene)
         window.windowLevel = .alert + 1
