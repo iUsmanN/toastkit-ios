@@ -135,11 +135,16 @@ struct LiquidToastView: View {
         ZStack(alignment: .center) {
             Rectangle()
                 .fill(.black)
-            Text("\(model.message)")
-                .foregroundStyle(.white)
-                .lineLimit(1)
-                .padding(.horizontal, 20)
-                .blur(radius: model.expanded ? 0 : 10)
+            HStack {
+                model.symbol
+                    .foregroundStyle(.white)
+                Text("\(model.message)")
+                    .foregroundStyle(.white)
+                    .lineLimit(1)
+                    .opacity(model.expanded ? 1 : 0)
+            }
+            .blur(radius: model.expanded ? 0 : 10)
+            .padding(.horizontal, 20)
             Rectangle()
                 .fill(model.expanded ? .clear : .black)
         }
