@@ -14,4 +14,16 @@ public class ToastModel: ObservableObject {
     var message: String = ""
     var color: Color = .blue
     var width: CGFloat = 250.0
+    var symbol: Image? = nil
+    
+    var isCentered: Bool {
+        switch toastType {
+        case .solid(let centred):
+            return centred
+        case .glass(let centred):
+            return centred
+        default:
+            return false
+        }
+    }
 }

@@ -31,7 +31,7 @@ struct BlurToastView: View {
     }
 
     var body: some View {
-        if UIDevice.current.screenType == .none {
+        if UIDevice.current.screenType == .none || model.isCentered {
             centerAligned()
         } else {
             topAligned()
@@ -44,12 +44,16 @@ struct BlurToastView: View {
             ZStack(alignment: .center) {
                 Rectangle()
                     .fill(model.expanded ? model.color.opacity(0.25) : .black)
-                Text("\(model.message)")
-                    .foregroundStyle(.primary)
-                    .lineLimit(1)
-                    .padding(.horizontal, 20)
-                    .opacity(model.expanded ? 1 : 0)
-                    .blur(radius: model.expanded ? 0 : 10)
+                HStack {
+                    model.symbol
+                        .foregroundStyle(.primary)
+                    Text("\(model.message)")
+                        .foregroundStyle(.primary)
+                        .lineLimit(1)
+                        .opacity(model.expanded ? 1 : 0)
+                }
+                .blur(radius: model.expanded ? 0 : 10)
+                .padding(.horizontal, 20)
             }
             .background(.thinMaterial)
             .opacity(!model.expanded ? 0 : 1)
@@ -73,16 +77,21 @@ struct BlurToastView: View {
             ZStack(alignment: .center) {
                 Rectangle()
                     .fill(model.color.opacity(0.25))
-                Text("\(model.message)")
-                    .foregroundStyle(.primary)
-                    .opacity(model.expanded ? 1 : 0)
+                HStack {
+                    model.symbol
+                        .foregroundStyle(.primary)
+                    Text("\(model.message)")
+                        .foregroundStyle(.primary)
+                        .lineLimit(1)
+                        .opacity(model.expanded ? 1 : 0)
+                }
                 Rectangle()
                     .fill(model.expanded ? .clear : .primary)
                     .colorInvert()
             }
             .background(.ultraThinMaterial)
             .opacity(!model.expanded ? 0 : 1)
-            .frame(width: model.expanded ? 220 : minimisedWidth, height: model.expanded ? 50 : 25)
+            .frame(width: model.expanded ? CGFloat.minimum((UIScreen.current?.bounds.size.width ?? 0) - 40, model.width) : minimisedWidth, height: model.expanded ? 50 : 25)
             .clipShape(RoundedRectangle(cornerRadius: 12))
             .overlay(content: {
                 RoundedRectangle(cornerRadius: 12)

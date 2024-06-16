@@ -9,10 +9,10 @@ import Foundation
 import SwiftUI
 import UIKit
 
-public enum ToastType {
+public enum ToastType: Equatable {
     case liquid
-    case solid
-    case glass
+    case solid(centred: Bool)
+    case glass(centred: Bool)
     case drop
 }
 
@@ -31,7 +31,7 @@ public class ToastKit {
     
     /// Configures ToastKit and prepares the views needed to overlay the toasts.
     /// - Parameter type: Type of toast to be presented. Default value is ``ToastType.glass``
-    public static func configure(type: ToastType = .glass, width: CGFloat = 250.0) {
+    public static func configure(type: ToastType = .glass(centred: false), width: CGFloat = 250.0) {
         guard let window = ToastKit.window else { return }
         shared.model.width = width
         if type == .liquid && UIDevice.current.screenType == .dynamicIsland {
@@ -39,9 +39,12 @@ public class ToastKit {
         } else if type == .drop && UIDevice.current.screenType != .none {
             shared.prepareJellyToast(window: window)
         } else {
-            if type == .solid {
-                shared.prepareSolidToast(window: window)
-            } else {
+            switch type {
+            case .solid(let centred):
+                shared.prepareSolidToast(window: window, centered: centred)
+            case .glass(let centred):
+                shared.prepareBlurToast(window: window, centered: centred)
+            default:
                 shared.prepareBlurToast(window: window)
             }
         }
@@ -60,10 +63,11 @@ public class ToastKit {
     /// - Parameters:
     ///   - message: A text stting that should be presented.
     ///   - color: Background tint of the toast. This is only applicable when presenting Glass or Solid toasts.
-    public static func present(message: String, color: Color = .blue) {
+    public static func present(message: String, symbol: Image? = nil, color: Color = .blue) {
         Task { @MainActor in
             guard !shared.model.expanded else { return }
             shared.model.message = message
+            shared.model.symbol = symbol
             shared.model.color = color
             withAnimation(.spring) {
                 shared.model.expanded = true
@@ -117,22 +121,22 @@ extension ToastKit {
         model.toastType = .drop
     }
     
-    private func prepareBlurToast(window: UIWindow) {
+    private func prepareBlurToast(window: UIWindow, centered: Bool = false) {
         let overlayView = BlurToastView(model: model)
         let hostingController = UIHostingController(rootView: overlayView)
         hostingController.view.backgroundColor = .clear
         self.blurHostingController = hostingController
         window.rootViewController = hostingController
-        model.toastType = .glass
+        model.toastType = .glass(centred: centered)
     }
     
-    private func prepareSolidToast(window: UIWindow) {
+    private func prepareSolidToast(window: UIWindow, centered: Bool = false) {
         let overlayView = ToastView(model: model)
         let hostingController = UIHostingController(rootView: overlayView)
         hostingController.view.backgroundColor = .clear
         self.standardHostingController = hostingController
         window.rootViewController = hostingController
-        model.toastType = .solid
+        model.toastType = .solid(centred: centered)
     }
 }
 
@@ -141,7 +145,7 @@ extension ToastKit {
         let currentOrientation = UIDevice.current.orientation
         if model.toastType == .drop || model.toastType == .liquid {
             ToastKit.window?.isHidden = !currentOrientation.isPortrait
-        } else if model.toastType == .glass || model.toastType == .solid {
+        } else {
             ToastKit.window?.isHidden = false
         }
         Task { dismissToast }
