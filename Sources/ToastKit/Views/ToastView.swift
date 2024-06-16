@@ -63,7 +63,7 @@ struct ToastView: View {
             .shadow(radius: 2)
             .overlay(content: {
                 Capsule()
-                    .stroke(model.expanded ? Color.primary.opacity(0.5) : Color.clear)
+                    .stroke(model.expanded ? model.tint.opacity(0.5) : Color.clear)
             })
             .padding(.top, model.expanded ? topPadding + 50 : topPadding)
             Spacer()
@@ -85,16 +85,15 @@ struct ToastView: View {
                         .lineLimit(1)
                         .opacity(model.expanded ? 1 : 0)
                 }
-                Rectangle()
-                    .fill(model.expanded ? .clear : .primary)
-                    .colorInvert()
             }
+            .blur(radius: model.expanded ? 0 : 8)
             .opacity(!model.expanded ? 0 : 1)
             .frame(width: CGFloat.minimum((UIScreen.current?.bounds.size.width ?? 0) - 40, model.width) - (model.expanded ? 0 : 20), height: model.expanded ? 50 : 40)
             .clipShape(RoundedRectangle(cornerRadius: 12))
+            .shadow(color: .black.opacity(0.15), radius: 4)
             .overlay(content: {
                 RoundedRectangle(cornerRadius: 12)
-                    .stroke(.primary.opacity(0.5))
+                    .stroke(model.tint.opacity(0.5))
                     .opacity(!model.expanded ? 0 : 1)
             })
         }

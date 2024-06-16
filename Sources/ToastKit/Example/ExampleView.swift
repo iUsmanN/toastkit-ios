@@ -29,20 +29,22 @@ struct ExampleView: View {
         }
         .ignoresSafeArea()
         .onAppear {
-            ToastKit.configure(type: .glass(centred: true))
+            ToastKit.configure(type: .liquid)
         }
     }
     
     func presentToast() {
         ToastKit.present(message: "Some cool message",
                          symbol: Image(systemName: "square.and.arrow.up.fill"),
-                         color: Color.yellow,
-                         tint: .black,
-                         width: 220)
+                         color: Color.black,
+                         tint: .white,
+                         width: 250)
     }
     
     func presentToast2() {
-        ToastKit.present(message: "Some cool message", color: Color.green)
+        ToastKit.present(message: "Some cool message",
+                         symbol: Image(systemName: "trash.fill"),
+                         color: Color.green)
     }
 }
 
