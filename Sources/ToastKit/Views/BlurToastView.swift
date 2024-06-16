@@ -57,13 +57,13 @@ struct BlurToastView: View {
             }
             .background(.thinMaterial)
             .opacity(!model.expanded ? 0 : 1)
-            .blur(radius: model.expanded ? 0 : 10)
+            .blur(radius: model.expanded ? 0 : 8)
             .frame(width: model.expanded ? CGFloat.minimum((UIScreen.current?.bounds.size.width ?? 0) - 40, model.width) : minimisedWidth, height: model.expanded ? 50 : 35)
             .clipShape(Capsule())
             .shadow(radius: 2)
             .overlay(content: {
                 Capsule()
-                    .stroke(model.expanded ? Color.primary.opacity(0.5) : Color.clear)
+                    .stroke(model.expanded ? model.tint.opacity(0.5) : Color.clear)
             })
             .padding(.top, model.expanded ? topPadding + 50 : topPadding)
             Spacer()
@@ -76,20 +76,17 @@ struct BlurToastView: View {
         VStack {
             ZStack(alignment: .center) {
                 Rectangle()
-                    .fill(model.color.opacity(0.35))
+                    .fill(model.color.opacity(0.5))
                 HStack {
                     model.symbol
                         .foregroundStyle(model.tint)
                     Text("\(model.message)")
                         .foregroundStyle(model.tint)
                         .lineLimit(1)
-                        .opacity(model.expanded ? 1 : 0)
                 }
-                Rectangle()
-                    .fill(model.expanded ? .clear : .primary)
-                    .colorInvert()
+                .blur(radius: model.expanded ? 0 : 8)
             }
-            .background(.ultraThinMaterial)
+            .background(.thinMaterial)
             .opacity(!model.expanded ? 0 : 1)
             .frame(width: CGFloat.minimum((UIScreen.current?.bounds.size.width ?? 0) - 40, model.width) - (model.expanded ? 0 : 20), height: model.expanded ? 50 : 40)
             .clipShape(RoundedRectangle(cornerRadius: 12))
