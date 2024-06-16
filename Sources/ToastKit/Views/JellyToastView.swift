@@ -177,6 +177,7 @@ struct JellyToastView: View {
                     .lineLimit(1)
                     .opacity(model.expanded ? 1 : 0)
             }
+            .dynamicTypeSize(.large)
             .blur(radius: model.expanded ? 0 : 10)
             .padding(.horizontal, 20)
             Rectangle()

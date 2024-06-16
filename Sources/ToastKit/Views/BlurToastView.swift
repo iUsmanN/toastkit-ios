@@ -52,6 +52,7 @@ struct BlurToastView: View {
                         .lineLimit(1)
                         .opacity(model.expanded ? 1 : 0)
                 }
+                .dynamicTypeSize(.large)
                 .blur(radius: model.expanded ? 0 : 10)
                 .padding(.horizontal, 20)
             }
@@ -76,7 +77,7 @@ struct BlurToastView: View {
         VStack {
             ZStack(alignment: .center) {
                 Rectangle()
-                    .fill(model.color.opacity(0.5))
+                    .fill(model.color.opacity(0.35))
                 HStack {
                     model.symbol
                         .foregroundStyle(model.tint)
@@ -84,6 +85,7 @@ struct BlurToastView: View {
                         .foregroundStyle(model.tint)
                         .lineLimit(1)
                 }
+                .dynamicTypeSize(.large)
                 .blur(radius: model.expanded ? 0 : 8)
             }
             .background(.thinMaterial)
