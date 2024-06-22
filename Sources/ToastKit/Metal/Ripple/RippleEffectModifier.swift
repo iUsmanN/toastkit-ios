@@ -15,7 +15,7 @@ public struct RippleEffect<T: Equatable>: ViewModifier {
 
     var trigger: T
 
-    init(at origin: CGPoint = .init(x: (UIScreen.current?.bounds.width ?? 0)/2, y: 10), trigger: T = ToastKit.shared.rippleTrigger) {
+    public init(at origin: CGPoint = .init(x: (UIScreen.current?.bounds.width ?? 0)/2, y: 10), trigger: T = ToastKit.shared.rippleTrigger) {
         self.origin = origin
         self.trigger = trigger
     }
