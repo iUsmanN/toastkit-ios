@@ -16,7 +16,7 @@ public enum ToastType: Equatable {
     case drop
 }
 
-public class ToastKit {
+public class ToastKit: ObservableObject {
     public static let shared = ToastKit()
     private static var window: UIWindow? = getWindow()
     private var liquidHostingController: UIHostingController<LiquidToastView>?
