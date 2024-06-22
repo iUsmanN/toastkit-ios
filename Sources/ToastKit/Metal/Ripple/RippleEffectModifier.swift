@@ -10,14 +10,16 @@ import SwiftUI
 /// A modifer that performs a ripple effect to its content whenever its
 /// trigger value changes.
 @available(iOS 17.0, *)
-public struct ToastRippleModifier<T: Equatable>: ViewModifier {
+public struct ToastRippleModifier: ViewModifier {
     var origin: CGPoint
 
-    var trigger: T
+    var trigger: Bool
+    
+//    @ObservedObject var toastKit: ToastKit = .shared
 
     public init(at origin: CGPoint) {
         self.origin = origin
-        self.trigger = ToastKit.shared.rippleTrigger as! T
+        self.trigger = ToastKit.shared.rippleTrigger
     }
     
     public init() {
@@ -27,7 +29,7 @@ public struct ToastRippleModifier<T: Equatable>: ViewModifier {
         } else {
             self.origin = .init(x: (UIScreen.current?.bounds.width ?? 0)/2, y: 10)
         }
-        self.trigger = ToastKit.shared.rippleTrigger as! T
+        self.trigger = ToastKit.shared.rippleTrigger
     }
 
     public func body(content: Content) -> some View {

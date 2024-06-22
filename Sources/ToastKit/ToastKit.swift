@@ -17,7 +17,7 @@ public enum ToastType: Equatable {
 }
 
 public class ToastKit: ObservableObject {
-    internal static let shared = ToastKit()
+    public static let shared = ToastKit()
     private static var window: UIWindow? = getWindow()
     private var liquidHostingController: UIHostingController<LiquidToastView>?
     private var standardHostingController: UIHostingController<ToastView>?
@@ -25,7 +25,7 @@ public class ToastKit: ObservableObject {
     private var jellyHostingController: UIHostingController<JellyToastView>?
     internal var model = ToastModel()
     
-    @Published internal var rippleTrigger: Bool = false
+    @Published public var rippleTrigger: Bool = false
     
     private init() {
         NotificationCenter.default.addObserver(self, selector: #selector(refreshOrientationView), name: UIDevice.orientationDidChangeNotification, object: nil)
