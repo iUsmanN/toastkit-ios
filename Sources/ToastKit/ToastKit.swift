@@ -24,7 +24,8 @@ public class ToastKit: ObservableObject {
     private var blurHostingController: UIHostingController<BlurToastView>?
     private var jellyHostingController: UIHostingController<JellyToastView>?
     private var model = ToastModel()
-    @Published public var toastTrigger: Bool = false
+    
+    @Published public var rippleTrigger: Bool = false
     
     private init() {
         NotificationCenter.default.addObserver(self, selector: #selector(refreshOrientationView), name: UIDevice.orientationDidChangeNotification, object: nil)
@@ -72,7 +73,7 @@ public class ToastKit: ObservableObject {
             shared.model.color = color
             shared.model.width = width
             shared.model.tint = tint
-            shared.toastTrigger.toggle()
+            shared.rippleTrigger.toggle()
             withAnimation(.spring) {
                 shared.model.expanded = true
             }
